@@ -1,20 +1,21 @@
 window.onload = setup;
 const cardContainer = document.getElementById("root");
-
+const searchDescription = document.getElementById("searchDescription");
+const searchField = document.getElementById("searchField");
+var allEpisodes;
 
 //You can edit ALL of the code here
 function setup() {
-  const allEpisodes = getAllEpisodes();
-  console.log(allEpisodes);
+  allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
+  searchField.addEventListener('keyup', makeSearch);
 }
 
 
 
 function makePageForEpisodes(episodeList) {
+  searchDescription.innerText = `Displaying ${allEpisodes.length}/${allEpisodes.length} episodes`;
   render(episodeList);
-
-
 }
 
 function render(arr) {
@@ -50,5 +51,15 @@ function zerroLead(num) {
 
 }
 
+function makeSearch(event) {
+  let resultArray = allEpisodes.filter((item) => {
+    if (item.name.toLowerCase().includes(event.target.value.toLowerCase()) || item.summary.toLowerCase().includes(event.target.value.toLowerCase())) {
+      return true;
+    }
+  });
+  cardContainer.innerHTML = '';
+  render(resultArray);
+  searchDescription.innerText = `Displaying ${resultArray.length}/${allEpisodes.length} episodes`;
 
+}
 
